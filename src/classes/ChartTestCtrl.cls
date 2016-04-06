@@ -13,6 +13,7 @@ public class ChartTestCtrl {
         return listOfPieData;
     }
     public void refreshFn(){
+        System.debug('Test');
         aaa= new List<Integer>{5,6,7,8};
         bbb= new List<String>{'500','600','700','800'};
     }
