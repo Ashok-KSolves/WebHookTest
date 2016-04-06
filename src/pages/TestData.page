@@ -1,0 +1,81 @@
+<apex:page controller="TestDataCtrl">
+    <apex:form >
+        <apex:commandButton value="click" action="{!test}" />
+    </apex:form>
+   <!-- <apex:outputPanel id="pid">
+        {!DailyApiMax}
+        {!DailyApiRem}
+        {!dataStorageMax}
+        {!dataStorageRem}
+        {!releaseName}
+    </apex:outputPanel>
+    <apex:form >
+                    <apex:actionFunction name="dailyApi" reRender="pid" >
+                        <apex:param name="apiReqM" value="" assignTo="{!DailyApiMax}"/>
+                        <apex:param name="apiReqR" value="" assignTo="{!DailyApiRem}"/>
+                        <apex:param name="dataStorageM" value="" assignTo="{!dataStorageMax}"/> 
+                        <apex:param name="dataStorageR" value="" assignTo="{!dataStorageRem}"/> 
+                        <apex:param name="releaseName" value="" assignTo="{!releaseName}"/>
+                    </apex:actionFunction> 
+    </apex:form> -->
+    <script>
+    /*  var xmlhttp = new XMLHttpRequest();
+        var url = "/services/data/v36.0/limits/";
+        
+        xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                console.log(xmlhttp.responseText);
+                myFunction(xmlhttp.responseText); 
+            }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.setRequestHeader("Authorization","Bearer {!$Api.Session_ID}");
+        xmlhttp.send();
+        
+        function myFunction(response) {
+            var res = JSON.parse(response);
+            var apiReqMax = 0, apiReqRem = 0 ;
+            var dataStorageMax = 0 , dataStorageRem = 0;
+            
+            Object.keys(res).forEach( function(key,index) { 
+                
+                if(key === 'DailyApiRequests'){
+                    //  apiReq = res[key].Max - res[key].Remaining;
+                    apiReqMax = res[key].Max;
+                    apiReqRem = res[key].Remaining;
+                }
+                if(key === 'DataStorageMB'){
+                    dataStorageMax = res[key].Max;
+                    dataStorageRem = res[key].Remaining;
+                    // dataStorage = res[key].Max - res[key].Remaining;
+                } 
+            });
+            
+            
+            
+            var xmlhttp1 = new XMLHttpRequest();
+            var urlVersion = "/services/data";
+            var releaseName = '';
+            xmlhttp1.onreadystatechange=function() {
+                if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200) {
+                    myFun(xmlhttp1.responseText);
+                }
+            }
+            
+            xmlhttp1.open("GET", urlVersion, true);
+            xmlhttp1.setRequestHeader("Authorization","Bearer {!$Api.Session_ID}");
+            xmlhttp1.send();
+            
+            function myFun(response) {
+                var res = JSON.parse(response);
+                
+                if(res.length > 0){
+                    releaseName = res[res.length -1].label;
+                    // versionLabel(releaseName); 
+                }
+                dailyApi(apiReqMax,apiReqRem,dataStorageMax,dataStorageRem,releaseName);
+            } 
+            
+        } */
+    </script>
+</apex:page>

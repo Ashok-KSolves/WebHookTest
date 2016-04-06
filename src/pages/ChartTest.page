@@ -1,0 +1,26 @@
+<apex:page controller="ChartTestCtrl" >
+    <apex:form >
+        <apex:outputPanel id="aaaaa">
+            <apex:repeat value="{!pieData}" var="pie" id="formId12" > 
+                <apex:chart height="250"  width="250" data="{!pie}" > 
+                    <!-- colorset="#8f8,#88f" -->
+                    <apex:pieSeries rendererFn="testFn" dataField="usedVal" labelField="maxVal" donut="0" >
+                    </apex:pieSeries>
+                    <apex:legend position="bottom" /> 
+                </apex:chart>  
+            </apex:repeat>
+        </apex:outputPanel>
+        
+        <apex:actionFunction name="versionLabel" reRender="aaaaa" action="{!refreshFn}" > 
+        </apex:actionFunction>
+        
+        <apex:commandButton onclick="refreshMe();" reRender="aaaax" value="aaa" />
+    </apex:form>
+    <script>
+    	function refreshMe(){
+        	console.log('aaaa');
+            versionLabel();
+            
+        }
+    </script>
+</apex:page>

@@ -1,0 +1,119 @@
+<apex:page controller="DataUsesCtrl" standardStylesheets="false" sidebar="false" docType="html">
+    <html>
+        <head>
+            <apex:stylesheet value="{!URLFOR($Resource.bootstraplib, '/bootstrap/css/bootstrap.min.css')}"/>
+            <style>
+                .tab-content .tab-pane {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+                display: inline;
+                }
+                .tab-content .tab-pane.active {
+                position: inherit !important;
+                } 
+            </style>
+        </head>
+        <body>
+            
+            <div class="container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#SystemOverview">System Overview</a></li>
+                    <li><a data-toggle="tab" href="#StorageSpace">Storage Space</a></li>
+                    <li><a data-toggle="tab" href="#OrgStorageSpace">Org StorageSpace</a></li>
+                </ul>
+                
+                <div class="tab-content">
+                    <div id="SystemOverview" class="tab-pane fade in active">
+                        <apex:include pageName="SystemOverview" ></apex:include>
+                    </div>
+                    <div id="StorageSpace" class="tab-pane fade">
+                        <apex:include pageName="StorageSpace"></apex:include>
+                    </div>
+                    <div id="OrgStorageSpace" class="tab-pane fade">
+                        <apex:include pageName="OrgStorageSpace"></apex:include>
+                    </div>
+                </div>
+                <apex:form >
+                    <apex:actionFunction name="dailyApi" reRender="noRerender" action="{!dialyApiData}" status="actStatusId" oncomplete="console.log('aaaa')">
+                        <apex:param name="apiReqM" value="" assignTo="{!DailyApiMax}"/>
+                        <apex:param name="apiReqR" value="" assignTo="{!DailyApiRem}"/>
+                        <apex:param name="dataStorageM" value="" assignTo="{!dataStorageMax}"/> 
+                        <apex:param name="dataStorageR" value="" assignTo="{!dataStorageRem}"/> 
+                        <apex:param name="releaseName" value="" assignTo="{!releaseName}"/>
+                    </apex:actionFunction> 
+                 <!--   <apex:actionPoller interval="60" oncomplete="fun()" enabled="{!IF(count = 2,false,true)}"/>  -->
+                </apex:form>
+            </div>
+            <apex:includeScript value="{!URLFOR($Resource.bootstraplib, '/bootstrap/js/jquery-1.11.3.min.js')}"/>   
+            <apex:includeScript value="{!URLFOR($Resource.bootstraplib, '/bootstrap/js/bootstrap.min.js')}"/>
+            <script>
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            }); 
+            //  function fun(){
+                   var xmlhttp = new XMLHttpRequest();
+                var url = "/services/data/v36.0/limits/";
+                
+                xmlhttp.onreadystatechange=function() {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        console.log(xmlhttp.responseText);
+                        myFunction(xmlhttp.responseText); 
+                    }
+                }
+                xmlhttp.open("GET", url, true);
+                xmlhttp.setRequestHeader("Authorization","Bearer {!$Api.Session_ID}");
+                xmlhttp.send();
+                
+                function myFunction(response) {
+                    var res = JSON.parse(response);
+                    var apiReqMax = 0, apiReqRem = 0 ;
+                    var dataStorageMax = 0 , dataStorageRem = 0;
+                    
+                    Object.keys(res).forEach( function(key,index) { 
+                        
+                        if(key === 'DailyApiRequests'){
+                            //  apiReq = res[key].Max - res[key].Remaining;
+                            apiReqMax = res[key].Max;
+                            apiReqRem = res[key].Remaining;
+                        }
+                        if(key === 'DataStorageMB'){
+                            dataStorageMax = res[key].Max;
+                            dataStorageRem = res[key].Remaining;
+                            // dataStorage = res[key].Max - res[key].Remaining;
+                        } 
+                    });
+                    
+                    
+                    
+                    var xmlhttp1 = new XMLHttpRequest();
+                    var urlVersion = "/services/data";
+                    var releaseName = '';
+                    xmlhttp1.onreadystatechange=function() {
+                        if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200) {
+                            myFun(xmlhttp1.responseText);
+                        }
+                    }
+                    
+                    xmlhttp1.open("GET", urlVersion, true);
+                    xmlhttp1.setRequestHeader("Authorization","Bearer {!$Api.Session_ID}");
+                    xmlhttp1.send();
+                    
+                    function myFun(response) {
+                        var res = JSON.parse(response);
+                        
+                        if(res.length > 0){
+                            releaseName = res[res.length -1].label;
+                            // versionLabel(releaseName); 
+                        }
+                        dailyApi(apiReqMax,apiReqRem,dataStorageMax,dataStorageRem,releaseName);
+                    } 
+                    
+                }
+            //   }
+            
+            </script>
+        </body>
+    </html>
+</apex:page>

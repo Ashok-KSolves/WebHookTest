@@ -1,0 +1,117 @@
+<apex:page controller="LeaderboardCtrl" standardStylesheets="false" sidebar="false">
+    
+    <apex:stylesheet value="{!URLFOR($Resource.leaderboard_library, '/css/bootstrap.css')}"/>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900' rel='stylesheet' type='text/css'/>
+    
+    <div class="main-bs-container" style="margin-top:1%; margin-bottom:23%">
+        <span>
+            <div>
+               <span style="margin:2%;font-weight: bold;font-family: sans-serif;font-size: 15px;">
+                   {!firstTeamLabel}
+                </span>
+               <span style="margin:41%;font-weight: bold;font-family: sans-serif;font-size: 15px;">
+                    {!secondTeamLabel}
+                </span>
+            </div>
+            <table class="table scoreboard">
+                
+                <tr style="background-color:rgba(74, 194, 241, 0.52)">
+                    <th class="round_left_corner">Team Member</th>
+                    <th>Target</th>
+                    <th>Target Achieved</th> 
+                    <th class="round_right_corner">Progress</th>
+                </tr>
+                <apex:repeat value="{!firstTeamMembers}" var="teamMember">
+                    <tr>
+                        <td class=""><span class="td_bold">{!teamMember.name}</span>
+                            <div class="td_role">
+                                {!IF((teamMember.role == null || teamMember.role == ''), '(no role)', teamMember.role)}
+                            </div>
+                            <div>
+                                <apex:image url="{!URLFOR($Resource.leaderboard_library, '/icons/Account-icon.jpg')}" width="18px"/>&nbsp; {!teamMember.accounts}&nbsp;&nbsp;&nbsp;&nbsp; 
+                                <apex:image url="{!URLFOR($Resource.leaderboard_library, '/icons/Opportunity-icon.jpg')}" width="18px"/>&nbsp; {!teamMember.opportunities}
+                            </div>
+                        </td>
+                        <td class="td_bold"><right>${!teamMember.formattedTarget}</right></td>
+                        <td class="td_bold">${!teamMember.formattedTargetAchieved}</td>
+                        <td></td>
+                    </tr>
+                    <!--<tr>
+<td class=""><span class="td_bold"> Kapil Kaushik </span>
+<div class="td_role">
+System Administrator
+</div>
+</td>
+<td class="td_bold">5</td>
+<td class="td_bold">5</td>
+</tr> -->
+                </apex:repeat>
+            </table>
+        </span>
+        
+        <table class="table scoreboard">
+            
+            <tr style="background-color:rgba(74, 194, 241, 0.52)">
+                <th class="round_left_corner">Team Member</th>
+                <th>Target</th>
+                <th>Target Achieved</th>
+                <th class="round_right_corner">Progress</th>
+            </tr>
+            <apex:repeat value="{!secondTeamMembers}" var="teamMember">
+                <tr>
+                    <td class=""><span class="td_bold">{!teamMember.name}</span>
+                        <div class="td_role">
+                            {!IF((teamMember.role == null || teamMember.role == ''), '(no role)', teamMember.role)}
+                        </div>
+                        <div>
+                            <apex:image url="{!URLFOR($Resource.leaderboard_library, '/icons/Account-icon.jpg')}" width="18px"/>&nbsp; {!teamMember.accounts}&nbsp;&nbsp;&nbsp;&nbsp; 
+                            <apex:image url="{!URLFOR($Resource.leaderboard_library, '/icons/Opportunity-icon.jpg')}" width="18px"/>&nbsp; {!teamMember.opportunities}
+                        </div>
+                    </td>
+                    <td class="td_bold">${!teamMember.formattedTarget}</td>
+                    <td class="td_bold">${!teamMember.formattedTargetAchieved}</td>
+                    <td></td>
+                </tr>
+                <!--<tr>
+<td class=""><span class="td_bold"> Kapil Kaushik </span>
+<div class="td_role">
+System Administrator
+</div>
+</td>
+<td class="td_bold">5</td>
+<td class="td_bold">5</td>
+</tr> -->
+            </apex:repeat>
+        </table>
+    </div>
+    <style>
+    	.table .td_bold {
+        	font-weight : bold;
+        }
+        .table .td_role {
+        	color : grey;
+        }
+        .table.scoreboard {
+        border: 1px solid gainsboro;
+        border-radius: 11px;
+        border-collapse : separate;
+        }
+        .table .round_left_corner {
+        border-top-left-radius : 11px;
+        }
+        .table .round_right_corner {
+        border-top-right-radius : 11px;
+        }
+        .main-bs-container .table {
+        max-width : 46%;
+        float:left;
+        margin : 20px;
+        }
+        
+        .main-bs-container .form-control {
+        width:auto;
+        float:right;
+        }
+        
+    </style>
+</apex:page>

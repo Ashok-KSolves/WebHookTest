@@ -1,0 +1,111 @@
+<apex:page controller="SystemOverviewCtrl" standardStylesheets="false" sidebar="false">
+    <apex:stylesheet value="{!URLFOR($Resource.bootstraplib, '/bootstrap/css/bootstrap.min.css')}"/> 
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900' rel='stylesheet' type='text/css'/>
+    <style type="text/css">
+        [hidden], template{
+        display: block;
+        } 
+       
+        .vf-reset {
+        border: 1px solid gainsboro;
+        border-radius: 15px;
+        margin-left:30px;
+        margin-bottom:30px;
+        padding-left:0px;
+        padding-right:0px;
+        width:202px;
+        height:232px;
+        } 
+        
+        .chart-header {
+        font-weight: bold;
+        border-bottom: 1px solid gainsboro;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        }
+        
+        .charts-color-notation {
+        width: 12px;
+        height: 12px;
+        margin-right: 9px;
+        }
+        
+        .notation-color {
+        padding-left: 14px;
+        padding-top: 10px;
+        }
+        
+        .notation-label {
+        padding-right:14px;
+        padding-top:10px;
+        }
+        
+        .notation-table {
+        border: 1px solid;
+        border-color: gainsboro;
+        border-radius: 14px;
+        border-collapse: initial !important;
+        }
+        
+    </style>
+    <apex:form >
+        <div class="col-xs-12" >
+            
+            <div style="padding-top:20px;">
+                <h2 >System Overview </h2> 
+				<table class="notation-table">
+                    <tr>
+                        <td class="notation-color"><div class="charts-color-notation" style="background-color:#78c953;"/></td>
+                        <td class="notation-label">Remaining</td>
+                    </tr>
+                    <tr>
+                        <td class="notation-color"><div class="" style="background-color:#5BB2EF;padding-bottom:12px;padding-left: 14px;width:12px"/></td>
+                        <td class="notation-label" style="padding-bottom:12px;">Used</td>
+                    </tr>
+                </table>
+                <apex:commandButton styleClass="btn btn-default" style="float:right" value="Sync Data" action="{!syncData}"/> 
+                <br/><br/>
+                <apex:outputPanel id="errId" rendered="{!IF((errorMsg == NULL),false,true)}">
+                    <div class="alert alert-danger">
+                        {!errorMsg}
+                    </div>
+                </apex:outputPanel>
+            </div>
+            
+              <apex:outputText id="formId1">
+                <apex:repeat value="{!PieData}" var="pie" id="formId12" > 
+                     
+                    <apex:chart height="200"  width="200" data="{!pie}" > 
+                        <apex:pieSeries rendererFn="testFn" dataField="usedVal" labelField="maxVal" donut="0" colorSet="#5BB2EF,#78C953">
+                        </apex:pieSeries>
+                        <apex:legend position="bottom"/> 
+                    </apex:chart>  
+                </apex:repeat>
+             </apex:outputText>
+        </div>
+        
+    </apex:form> 
+    
+    <script>
+    
+    function testFn(klass,item) {
+        var a= document.getElementsByClassName( 'vf-reset');
+        for (var i = 0; i < a.length-1; i++) {
+            if(a[i].className.toLowerCase().indexOf('col-xs-3') === -1){
+                a[i].className += ' col-xs-3';
+                var node = document.createElement("DIV"); 
+                node.setAttribute("style", "font-weight:bold;border-bottom: 1px solid gainsboro;padding-top: 3px;padding-bottom: 3px;padding-left:16px;background: #E9E9E9;border-top-left-radius: 14px;border-top-right-radius: 14px;");
+                //node.setAttribute("style", "font-weight: bold;");
+                //node.appendAttribute("style", "border-bottom: 1px solid gainsboro;");
+                //node.setAttribute("style", "padding-top: 3px;");
+                //node.setAttribute("style", "padding-bottom: 3px;");
+                var textnode = document.createTextNode(item.get('chartLabel'));
+                
+                node.appendChild(textnode);
+                a[i].appendChild(node);
+                a[i].insertBefore(node, a[i].childNodes[0]);
+            }
+        } 
+    }
+    </script>
+</apex:page>

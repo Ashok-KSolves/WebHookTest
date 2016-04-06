@@ -1,0 +1,35 @@
+<apex:page >
+   
+     <script type="text/javascript">
+    var xmlhttp1 = new XMLHttpRequest();
+    var url = "/services/data/v36.0/limits/";
+    
+    xmlhttp1.onreadystatechange=function() {
+        if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200) {
+            myFun1(xmlhttp1.responseText);
+        }
+    }
+    
+    xmlhttp1.open("GET", url, true);
+    xmlhttp1.setRequestHeader("Authorization","Bearer {!$Api.Session_ID}");
+    xmlhttp1.send();
+    
+    function myFun1(response) {
+        var res = JSON.parse(response);
+        var d = document.getElementById('result');
+        Object.keys(res).forEach( function(key,index) { 
+                
+                d.innerHTML += "<strong>" + key + "</strong> <br/>" + 
+                    "Max: " + res[key].Max + "<br/>" + 
+                    "Remaining: " + res[key].Remaining + 
+                    "<br/><br/>";
+             
+            });
+      
+    }   
+    </script>
+   
+    <div id="result" >
+        
+    </div>
+</apex:page>

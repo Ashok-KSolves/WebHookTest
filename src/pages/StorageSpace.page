@@ -1,0 +1,36 @@
+<apex:page controller="StorageSpaceCtrl" docType="html" standardStylesheets="false" sidebar="false">
+    
+            <apex:stylesheet value="{!URLFOR($Resource.bootstraplib, '/bootstrap/css/bootstrap.min.css')}"/> 
+            <Style>
+                [hidden], template{
+                display: block;
+                } 
+            </Style>
+        
+            <div class="table-responsive">  
+                <div style="padding-bottom:20px;">
+                    <h4> Data Storage Uses </h4> 
+                </div>
+                <div class= "col-xs-10">  
+                    <apex:outputPanel id="objPanelId">
+                        <div>
+                            <h4> Object with record count and storage space </h4>
+                            <apex:chart height="500" width="1000" data="{!ObjectRecord}">
+                                
+                                <apex:legend position="right" font="bold 14px Helvetica"/>
+                                
+                                <apex:axis type="Numeric" position="left" fields="recordCount" title="Record Count">
+                                </apex:axis> 
+                                <apex:axis type="Category"  position="bottom" fields="name" title="Object">
+                                    <apex:chartLabel orientation="vertical" display="outside" rotate="315"/>
+                                </apex:axis>
+                                
+                                <apex:barSeries orientation="vertical" axis="left" xField="name" yField="recordCount,recordStorageSpace">
+                                    <apex:chartLabel display="outside" minMargin="10"/>
+                                </apex:barSeries>
+                            </apex:chart>
+                        </div>
+                    </apex:outputPanel>
+                </div>
+            </div> 
+</apex:page>
