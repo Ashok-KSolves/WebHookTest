@@ -5,6 +5,8 @@ public class ChartTestCtrl {
         
     public List<List<pieData>> getPieData(){
 	System.debug('test');
+	System.debug('test');
+	System.debug('test');
         List<List<pieData>> listOfPieData = new List<List<pieData>>();
         List<pieData> a = new List<pieData>();
         listOfPieData.add(a);
